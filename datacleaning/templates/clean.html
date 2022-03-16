@@ -1,0 +1,20 @@
+{% extends "./index.html" %} {% block content %}
+<div class="cleaner-container">
+  <div class="mid-container">
+    <div class="data-container">
+      <div class="data">
+        <form action="" method="post">
+          <label for="colname">Enter Column to Clean:</label><br />
+          {% csrf_token %} {{ form.as_p|default_if_none:"" }}<br />
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
+    </div>
+    <br /><br /><br />
+    <div class="table-container">
+      <div class="table">{{ table|safe }}</div>
+    </div>
+  </div>
+  <div class="side-bar">{% block datadesc %} {% endblock %}</div>
+</div>
+{% endblock %}

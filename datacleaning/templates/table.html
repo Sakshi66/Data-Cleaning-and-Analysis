@@ -1,0 +1,17 @@
+{% extends "./clean.html" %} {% block tables %}
+<table>
+  <tr>
+    {% for data in table_obj %}
+    <th>{{ data|safe }}</th>
+    {% endfor %}
+  </tr>
+  {% for _, record in table_obj.iterrows %}
+  <tr>
+    {% for value in data %}
+    <td>{{ value|safe }}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}
