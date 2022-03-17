@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from wsgiref.util import FileWrapper
 from django.template.response import TemplateResponse
 import json
+from django import forms
 
 import sys
 import os
@@ -16,8 +17,10 @@ import cleaner.libs.Encoding as en
 import cleaner.libs.FeatureScaling as fs
 #import cleaner.libs.Downloading as dw
 
-from . import forms
+#from . import forms
 
+class InputForm(forms.Form):
+    colName = forms.CharField(max_length = 200, required = False)
 
 # Create your views here.
 def home(request):

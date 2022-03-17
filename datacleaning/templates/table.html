@@ -15,3 +15,9 @@
 </table>
 
 {% endblock %}
+
+<form action="" method="post">
+  <label for="colname">Enter Column to Clean:</label><br />
+  {% csrf_token %} {% form.as_p:"" }}<br />
+  <input type="submit" value="Submit" />
+</form>

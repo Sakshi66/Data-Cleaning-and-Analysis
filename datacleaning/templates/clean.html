@@ -4,9 +4,9 @@
     <div class="data-container">
       <div class="data">
         <form action="" method="post">
-          <label for="colname">Enter Column to Clean:</label><br />
-          {% csrf_token %} {{ form.as_p|default_if_none:"" }}<br />
-          <input type="submit" value="Submit" />
+          <label for="colname">Enter Column to Clean: </label>
+          <input id="colname" type="text" name="colname" value="" />
+          <input type="submit" value="SET" />
         </form>
       </div>
     </div>
