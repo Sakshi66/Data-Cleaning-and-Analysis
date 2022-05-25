@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'feature.css'%}" />
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"
+    ></script>
+    <title>Data Cleaning-Feature Importance</title>
+  </head>
+  <body>
+    <div class="outer-container">
+      <div id="impValuesContainer" class="innerContainer">{{ table|safe }}</div>
+      <div id="graphsContainer" class="innerContainer"></div>
+    </div>
+  </body>
+  <script>
+    $(document).ready(function () {
+      $.ajax({
+        url: "/getGraph",
+        type: "GET",
+        data: "str",
+        context: document.body,
+        success: function (data) {
+          console.log(data);
+          //$("#graphsContainer").html(data);
+        },
+      });
+    });
+  </script>
+</html>

@@ -3,18 +3,105 @@
   <div class="mid-container">
     <div class="data-container">
       <div class="data">
-        <form action="" method="post">
-          <label for="colname">Enter Column to Clean: </label>
-          <input id="colname" type="text" name="colname" value="" />
+        <form action="" method="post" id="postTarget">
+          {% csrf_token %}
+          <label for="target">Set Target Column: </label>
+          <input id="target" type="text" name="target" value="" />
           <input type="submit" value="SET" />
         </form>
+        <p>By default, the target column will be the last column.</p>
+        <br />
+        The Targeted Column is:
+        <span id="targetedColumn" style="font-weight: 600"></span>
+        <br /><br /><br />
+        <form action="" method="post" id="postColName">
+          {% csrf_token %}
+          <label for="colname">Enter Column to Clean: </label>
+          <input id="colName" type="text" name="colName" value="" />
+          <input type="submit" value="SET" />
+        </form>
+
+        <div class="currentColumn">
+          <br />
+          The Selected Column is:
+          <span id="selectedColumn" style="font-weight: 600"></span>
+        </div>
       </div>
     </div>
     <br /><br /><br />
     <div class="table-container">
-      <div class="table">{{ table|safe }}</div>
+      <div class="table" id="table">{{ table|safe }}</div>
     </div>
   </div>
-  <div class="side-bar">{% block datadesc %} {% endblock %}</div>
+
+  <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    {% include './datadesc.html' %} {% block datadesc %} {% endblock %}
+  </div>
 </div>
+
+<script type="text/javascript">
+  $(document).on("submit", "#postColName", function (e) {
+    e.preventDefault();
+
+    $.ajax({
+      type: "POST",
+      url: "/getColumn",
+      data: {
+        colName: $("#colName").val(),
+        csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+      },
+      success: function (data) {
+        $("#selectedColumn").html(data);
+        console.log(data);
+      },
+    });
+  });
+
+  $(document).on("submit", "#postTarget", function (e) {
+    e.preventDefault();
+
+    $.ajax({
+      type: "POST",
+      url: "/targetColumn",
+      data: {
+        target: $("#target").val(),
+        csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+      },
+      success: function (data) {
+        $("#targetedColumn").html(data);
+        console.log(data);
+      },
+    });
+  });
+
+  $(document).on("submit", "#postColName", function (e) {
+    e.preventDefault();
+
+    $.ajax({
+      type: "POST",
+      url: "/describe",
+      dataType: "json",
+      data: {
+        colName: $("#colName").val(),
+        csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+      },
+      success: function (data) {
+        //dict = JSON.stringify(data);
+        var tableData = "<table >";
+        $.each(data, function (key, value) {
+          tableData += "<tr>";
+          tableData += "<td>" + key + "</td>";
+          tableData += "<td>" + value + "</td>";
+          tableData += "</tr>";
+        });
+        tableData += "</table>";
+
+        //$("#table").html(tableData);
+        $("#dataDescription").html(tableData);
+        console.log(data);
+      },
+    });
+  });
+</script>
 {% endblock %}

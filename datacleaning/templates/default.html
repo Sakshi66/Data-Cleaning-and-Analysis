@@ -1,12 +1,20 @@
 {% extends "./index.html" %} {% block content %}
 <div class="default-container">
-  <center>
-    <section class="upload-container" style="margin-top: 200px">
+  <section class="upload-container" style="margin-top: 200px">
+    <center>
       <h2>To start cleaning your data....</h2>
-      <br />
-      <button class="upload_button">Upload File!</button>
-    </section>
-  </center>
+      {% csrf_token %}
+      <input type="file" id="fileUpload" />
+      <button
+        class="upload_button"
+        id=" upload"
+        value="Upload"
+        onclick="location.href='{% url 'upload' %}'"
+      >
+        Upload File!
+      </button>
+    </center>
+  </section>
   <section class="contact"></section>
 </div>
 {% endblock %}

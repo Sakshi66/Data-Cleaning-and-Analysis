@@ -13,10 +13,10 @@ class NullValues:
 		return df
 
 	def fillMean(self,df,colName):
-		if colName in self.df.columns:
-			if self.df.dtypes[colName] != 'object':
-				mean_value = self.df[colName].mean()
-				self.df[colName].fillna(value=mean_value, inplace=True)
+		if colName in df.columns:
+			if df.dtypes[colName] != 'object':
+				mean_value = df[colName].mean()
+				df[colName].fillna(value=mean_value, inplace=True)
 			else:
 				print("Cannot Replace with Mean")
 		else:
@@ -25,8 +25,8 @@ class NullValues:
 		return df
 
 	def fillMode(self,df,colName):
-		if colName in self.df.columns:
-			mode_value = df[colName].mode()
+		if colName in df.columns:
+			mode_value = df[colName].mode()[0]
 			df[colName].fillna(value=mode_value, inplace=True)
 		else:
 			print("The column name is invalid!")
@@ -34,7 +34,7 @@ class NullValues:
 		return df
 			
 	def fillMedian(self,df,colName):
-		if colName in self.df.columns:
+		if colName in df.columns:
 			if df.dtypes[colName] != 'object':
 				median_value = df[colName].median()
 				df[colName].fillna(value=median_value, inplace=True)

@@ -19,7 +19,7 @@ class Encoding:
 	def oneHotEncoding(self,df,colName):
 		if colName in df:
 			df_cat = df.select_dtypes(include =['object'])
-			if comName in df_cat:				
+			if colName in df_cat:				
 				encoded_df = pd.get_dummies(df[[colName]])
 				# This returns a new dataframe with a column for every unique value that exists,
 				# along with either a 1 or 0 specifying the presence of that rating for a

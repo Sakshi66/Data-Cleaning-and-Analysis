@@ -9,12 +9,16 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
     />
-    <link rel="stylesheet" href="{% static 'main.css'%}" />
-
+    <link rel="stylesheet" href="{% static 'styles.css'%}" />
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"
+    ></script>
     <title>Data Cleaning and Analysis</title>
   </head>
   <body>
-    <!--========== HEADER ==========-->
+    <!--========== SCRIPT ==========-->
     <script type="text/javascript">
       /*==================== SHOW NAVBAR ====================*/
       const showMenu = (headerToggle, navbarId) => {
@@ -31,6 +35,7 @@
         }
       };
       showMenu("header-toggle", "navbar");
+
       /*==================== LINK ACTIVE ====================*/
       const linkColor = document.querySelectorAll(".nav__link");
       function colorLink() {
@@ -84,8 +89,8 @@
       ga("send", "pageview");
 
       function openNav() {
-        document.getElementById("mySidebar").style.width = "250px";
-        document.getElementById("main").style.marginLeft = "250px";
+        document.getElementById("mySidebar").style.width = "300px";
+        document.getElementById("main").style.marginLeft = "300px";
       }
 
       function closeNav() {
@@ -101,8 +106,41 @@
         document.getElementById("mybutton").style.textShadow =
           "0px 0px 0px #010101";
       }
+
+      function Upload() {
+        var fileUpload = document.getElementById("fileUpload");
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+        if (regex.test(fileUpload.value.toLowerCase())) {
+          if (typeof FileReader != "undefined") {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              var table = document.createElement("table");
+              var rows = e.target.result.split("\n");
+              for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].split(",");
+                if (cells.length > 1) {
+                  var row = table.insertRow(-1);
+                  for (var j = 0; j < cells.length; j++) {
+                    var cell = row.insertCell(-1);
+                    cell.innerHTML = cells[j];
+                  }
+                }
+              }
+              var dvCSV = document.getElementById("dvCSV");
+              dvCSV.innerHTML = "";
+              dvCSV.appendChild(table);
+            };
+            reader.readAsText(fileUpload.files[0]);
+          } else {
+            alert("This browser does not support HTML5.");
+          }
+        } else {
+          alert("Please upload a valid CSV file.");
+        }
+      }
     </script>
 
+    <!--========== HEADER ==========-->
     <header class="header">
       <div class="header__container">
         <a href="#" class="header__logo">Data Cleaning and Analysis</a>
@@ -136,7 +174,7 @@
 
           <div class="nav__list">
             <div class="nav__items">
-              <button
+              <!--<button
                 class="nav__link active nav_button"
                 id="mybutton"
                 onclick=""
@@ -145,7 +183,7 @@
               >
                 <i class="bx bx-upload nav__icon"></i>
                 <span class="nav__name">Upload</span>
-              </button>
+              </button> -->
               <button
                 class="nav__link active nav_button"
                 id="mybutton"
@@ -175,32 +213,28 @@
                   <div class="nav__dropdown-content">
                     <button
                       class="nav__dropdown-item nav_button_sub"
-                      id="mybutton"
-                      onclick=""
+                      id="nullColRem"
                       value="2.1"
                     >
                       Remove column
                     </button>
                     <button
                       class="nav__dropdown-item nav_button_sub"
-                      id="mybutton"
-                      onclick=""
+                      id="nullFillMean"
                       value="2.2"
                     >
                       Fill NULL values (with mean)
                     </button>
                     <button
                       class="nav__dropdown-item nav_button_sub"
-                      id="mybutton"
-                      onclick=""
+                      id="nullFillMedian"
                       value="2.3"
                     >
                       Fill NULL values (with median)
                     </button>
                     <button
                       class="nav__dropdown-item nav_button_sub"
-                      id="mybutton"
-                      onclick=""
+                      id="nullFillMode"
                       value="2.4"
                     >
                       Fill NULL values (with mode)
@@ -227,11 +261,10 @@
                   <div class="nav__dropdown-content">
                     <button
                       class="nav__dropdown-item nav_button_sub"
-                      id="mybutton"
-                      onclick=""
+                      id="encodeOneHot"
                       value="3.1"
                     >
-                      Performing one hot coding
+                      Performing one hot Encoding
                     </button>
                   </div>
                 </div>
@@ -255,19 +288,77 @@
                   <div class="nav__dropdown-content">
                     <button
                       class="nav__dropdown-item nav_button_sub"
-                      id="mybutton"
-                      onclick=""
+                      id="fsNorm"
                       value="4.1"
                     >
                       Performing Normalization
                     </button>
                     <button
                       class="nav__dropdown-item nav_button_sub"
-                      id="mybutton"
-                      onclick=""
+                      id="fsStand"
                       value="4.2"
                     >
                       Performing standerdization
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="nav__dropdown">
+                <a
+                  href="#"
+                  class="nav__link nav_a"
+                  id="mybutton"
+                  onclick=""
+                  value="4"
+                >
+                  <i class="bx bxl-deezer nav__icon"></i>
+                  <span class="nav__name">Feature Importance</span>
+                  <i
+                    class="bx bx-chevron-down nav__icon nav__dropdown-icon"
+                  ></i>
+                </a>
+
+                <div class="nav__dropdown-collapse">
+                  <div class="nav__dropdown-content">
+                    <button
+                      class="nav__dropdown-item nav_button_sub"
+                      id="mybtn"
+                      value="4.1"
+                    >
+                      <a
+                        href="{% url 'fmCoefficientMethod' %}"
+                        target="_blank"
+                        style="text-decoration: none; color: inherit"
+                      >
+                        Coefficients Method
+                      </a>
+                    </button>
+                    <button
+                      class="nav__dropdown-item nav_button_sub"
+                      id="mybtn"
+                      value="4.2"
+                    >
+                      <a
+                        href="{% url 'fmTreeMethod' %}"
+                        target="_blank"
+                        style="text-decoration: none; color: inherit"
+                      >
+                        Tree Based Model
+                      </a>
+                    </button>
+                    <button
+                      class="nav__dropdown-item nav_button_sub"
+                      id="mybtn"
+                      value="4.2"
+                    >
+                      <a
+                        href="{% url 'fmPCA' %}"
+                        target="_blank"
+                        style="text-decoration: none; color: inherit"
+                      >
+                        Principal Component Analysis (PCA)
+                      </a>
                     </button>
                   </div>
                 </div>
@@ -276,7 +367,7 @@
           </div>
         </div>
 
-        <button class="nav__link active nav_button">
+        <button class="nav__link active nav_button" id="csvDownload">
           <i class="bx bx-download nav__icon"></i>
           <span class="nav__name">Download</span>
         </button>
@@ -286,11 +377,6 @@
     <!--========== CONTENTS ==========-->
     <main>
       <section>
-        <div id="mySidebar" class="sidebar">
-          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
-            >×</a
-          >
-        </div>
         <div style="margin: 30px auto">
           <div id="carbon-block">
             <div class="content">{% block content %} {% endblock %}</div>
@@ -298,5 +384,103 @@
         </div>
       </section>
     </main>
+
+    <script>
+      $("#nullColRem").on("click", function (event) {
+        $.ajax({
+          url: "/nullColRem",
+          type: "GET",
+          success: function (data) {
+            //alert("success");
+            //console.log(data);
+            $("#table").html(data);
+          },
+        });
+      });
+
+      $("#nullFillMean").on("click", function (event) {
+        $.ajax({
+          url: "/nullFillMean",
+          type: "GET",
+          success: function (data) {
+            //alert("success");
+            //console.log(data);
+            $("#table").html(data);
+          },
+        });
+      });
+
+      $("#nullFillMedian").on("click", function (event) {
+        $.ajax({
+          url: "/nullFillMedian",
+          type: "GET",
+          success: function (data) {
+            //alert("success");
+            //console.log(data);
+            $("#table").html(data);
+          },
+        });
+      });
+
+      $("#nullFillMode").on("click", function (event) {
+        $.ajax({
+          url: "/nullFillMode",
+          type: "GET",
+          success: function (data) {
+            //alert("success");
+            //console.log(data);
+            $("#table").html(data);
+          },
+        });
+      });
+
+      $("#encodeOneHot").on("click", function (event) {
+        $.ajax({
+          url: "/encodeOneHot",
+          type: "GET",
+          success: function (data) {
+            //alert("success");
+            //console.log(data);
+            $("#table").html(data);
+          },
+        });
+      });
+
+      $("#fsNorm").on("click", function (event) {
+        $.ajax({
+          url: "/fsNorm",
+          type: "GET",
+          success: function (data) {
+            //alert("success");
+            //console.log(data);
+            $("#table").html(data);
+          },
+        });
+      });
+
+      $("#fsStand").on("click", function (event) {
+        $.ajax({
+          url: "/fsStand",
+          type: "GET",
+          success: function (data) {
+            //alert("success");
+            //console.log(data);
+            $("#table").html(data);
+          },
+        });
+      });
+
+      $("#csvDownload").on("click", function (event) {
+        $.ajax({
+          url: "/csvDownload",
+          type: "GET",
+          success: function (data) {
+            //alert("success");
+            console.log(data);
+            //$("#table").html(data);
+          },
+        });
+      });
+    </script>
   </body>
 </html>
